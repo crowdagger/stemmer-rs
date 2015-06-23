@@ -8,13 +8,23 @@ use std::str;
 struct SbStemmer;
 type SbSymbol = u8;
 
-#[derive(Debug)]
+/// Stemmer
+///
+/// Wraps Snowball's C stemming library so it can be used safely in Rust.
+///
+/// # Examples
+///
+/// ```
+/// use stemmer::Stemmer;
+/// let stemmer = Stemmer::new("french").unwrap();
+/// assert_eq!("éternu", &stemmer.stem("éternuerai"));
+/// ```
 pub struct Stemmer {
     stemmer: *mut SbStemmer
 }
     
 
-#[link(name = "stemmer", kind="static")]
+
 extern {
     fn sb_stemmer_list () -> *const *const c_char;
     fn sb_stemmer_new(algorithm:*const c_char, charenc: *const c_char) -> *mut SbStemmer;
@@ -36,6 +46,8 @@ impl Drop for Stemmer {
 }
 
 impl Stemmer {
+    /// Lists all existing algorithms, returning a vector of valid algorithms
+    /// that can be used as argument for `Stemmer::new`
     pub fn list() -> Vec<&'static str>
     {
         let mut i = 0;
@@ -56,7 +68,17 @@ impl Stemmer {
         }
     }
 
-    
+    /// Creates a new stemmer, provided `algorithm` is a valid one.
+    ///
+    /// # Arguments
+    ///
+    /// * `algorithm`: the name of a stemming algorithm. A list of supported
+    /// algorithms can be obtained with `Stemmer::list()`
+    ///
+    /// # Returns
+    ///
+    /// * `Some(Stemmer)` if `algorithm` exists;
+    /// * `None` otherwise.
     pub fn new(algorithm: &str) -> Option<Stemmer> {
         let algo = CString::new(algorithm).unwrap();
         let enc = CString::new("UTF_8").unwrap();
@@ -70,13 +92,22 @@ impl Stemmer {
         }
     }
 
-    pub fn stem(self, word: &str) -> String {
+    /// Stems the `word`.
+    ///
+    /// Returns an owned string.
+    pub fn stem(&self, word: &str) -> String {
         unsafe {
             self.stem_unsafe(word).to_string()
         }
     }
 
-    pub unsafe fn stem_unsafe (self, word: &str) -> &'static str {
+    /// Stems the word, unsafely.
+    ///
+    /// The `&str` it returns is only valid as long as you don't
+    /// call `stem` or stem_unsafe` again.
+    ///
+    /// Unless you know what you are doing, you should use the `stem` method.
+    pub unsafe fn stem_unsafe (&self, word: &str) -> &'static str {
         let word = CString::new(word).unwrap();
         let res = sb_stemmer_stem(self.stemmer,
                                   word.as_ptr(),
