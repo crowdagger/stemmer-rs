@@ -70,16 +70,20 @@ impl Stemmer {
         }
     }
 
-    pub fn stem(self, word: &str) -> &'static str {
-        let word = CString::new(word).unwrap();
+    pub fn stem(self, word: &str) -> String {
         unsafe {
-            let res = sb_stemmer_stem(self.stemmer,
-                                      word.as_ptr(),
-                                      word.to_bytes().len() as i32);
-            let bytes:&[u8] = CStr::from_ptr(res).to_bytes();
-            let s:&str = str::from_utf8_unchecked(bytes);
-            return s;
+            self.stem_unsafe(word).to_string()
         }
+    }
+
+    pub unsafe fn stem_unsafe (self, word: &str) -> &'static str {
+        let word = CString::new(word).unwrap();
+        let res = sb_stemmer_stem(self.stemmer,
+                                  word.as_ptr(),
+                                  word.to_bytes().len() as i32);
+        let bytes:&[u8] = CStr::from_ptr(res).to_bytes();
+        let s:&str = str::from_utf8_unchecked(bytes);
+        return s;
     }
 }
 

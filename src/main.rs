@@ -1,7 +1,3 @@
-extern crate libc;
-use libc::*;
-
-
 extern crate stemmer;
 use stemmer::Stemmer;
 
