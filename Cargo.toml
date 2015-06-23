@@ -1,0 +1,12 @@
+[package]
+name = "stemmer"
+version = "0.1.0"
+authors = ["Elisabeth Henry <liz.henry@ouvaton.org>"]
+links = "stemmer"
+build = "build.rs"
+
+[build-dependencies]
+gcc = "*"
+
+[dependencies]
+libc = "0.1.8"
