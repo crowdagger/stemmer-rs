@@ -21,7 +21,7 @@ fn main() {
         .file("libstemmer_c/src_c/stem_UTF_8_turkish.c")
         .file("libstemmer_c/runtime/api.c")
         .file("libstemmer_c/runtime/utilities.c")
-        .file("libstemmer_c/libstemmer/libstemmer.c")
+        .file("libstemmer_c/libstemmer/libstemmer_utf8.c")
         .compile("libstemmer.a");
 }
     
