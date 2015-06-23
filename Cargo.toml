@@ -2,6 +2,10 @@
 name = "stemmer"
 version = "0.1.0"
 authors = ["Elisabeth Henry <liz.henry@ouvaton.org>"]
+license = "BSD-2-Clause"
+readme = "README.md"
+homepage = "https://github.com/lady-segfault/stemmer-rs"
+repository = "https://github.com/lady-segfault/stemmer-rs"
 links = "stemmer"
 build = "build.rs"
 
