@@ -1,10 +1,11 @@
 [package]
 name = "stemmer"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["Elisabeth Henry <liz.henry@ouvaton.org>"]
 license = "BSD-2-Clause"
 readme = "README.md"
 homepage = "https://github.com/lady-segfault/stemmer-rs"
+documentation = "http://lady-segfault.github.io/stemmer/index.html"
 repository = "https://github.com/lady-segfault/stemmer-rs"
 description = "Stemming library for Rust, using bindings to Snowball C implementation"
 links = "stemmer"

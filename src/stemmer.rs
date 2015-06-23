@@ -36,7 +36,6 @@ extern {
 
 impl Drop for Stemmer {
     fn drop(&mut self) {
-        println!("dropping");
         unsafe {
             if !self.stemmer.is_null() {
                 sb_stemmer_delete(self.stemmer);
