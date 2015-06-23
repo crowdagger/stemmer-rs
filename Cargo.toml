@@ -6,6 +6,7 @@ license = "BSD-2-Clause"
 readme = "README.md"
 homepage = "https://github.com/lady-segfault/stemmer-rs"
 repository = "https://github.com/lady-segfault/stemmer-rs"
+description = "Stemming library for Rust, using bindings to Snowball C implementation"
 links = "stemmer"
 build = "build.rs"
 
