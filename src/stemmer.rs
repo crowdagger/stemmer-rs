@@ -78,6 +78,20 @@ impl Stemmer {
     ///
     /// * `Some(Stemmer)` if `algorithm` exists;
     /// * `None` otherwise.
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use stemmer::Stemmer;
+    /// let stemmer = Stemmer::new("english");
+    /// assert!(stemmer.is_some());
+    /// ```
+    ///
+    /// ```rust
+    /// use stemmer::Stemmer;
+    /// let stemmer = Stemmer::new("foobar");
+    /// assert!(stemmer.is_none());
+    /// ```
     pub fn new(algorithm: &str) -> Option<Stemmer> {
         let algo = CString::new(algorithm).unwrap();
         let enc = CString::new("UTF_8").unwrap();
@@ -105,7 +119,7 @@ impl Stemmer {
     /// The `&str` it returns is only valid as long as you don't
     /// call `stem` or stem_unsafe` again.
     ///
-    /// Unless you know what you are doing, you should use the `stem` method.
+    /// Unless you know what you are doing, you should use the safe `stem` method.
     pub unsafe fn stem_unsafe (&self, word: &str) -> &'static str {
         let word = CString::new(word).unwrap();
         let res = sb_stemmer_stem(self.stemmer,
