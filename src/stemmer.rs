@@ -4,7 +4,7 @@ use std::ffi::CStr;
 use std::ffi::CString;
 use std::str;
 
-#[repr(C,packed)]
+#[repr(C)]
 struct SbStemmer;
 type SbSymbol = u8;
 
