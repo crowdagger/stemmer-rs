@@ -110,23 +110,28 @@ impl Stemmer {
     /// Returns an owned string.
     pub fn stem(&self, word: &str) -> String {
         unsafe {
-            self.stem_unsafe(word).to_string()
+            (&*self.stem_unsafe(word)).to_string()
         }
     }
 
     /// Stems the word, unsafely.
     ///
-    /// The `&str` it returns is only valid as long as you don't
+    /// The `str` pointer it returns is only valid as long as you don't
     /// call `stem` or stem_unsafe` again.
     ///
     /// Unless you know what you are doing, you should use the safe `stem` method.
-    pub unsafe fn stem_unsafe (&self, word: &str) -> &'static str {
-        let word = CString::new(word).unwrap();
-        let res = sb_stemmer_stem(self.stemmer,
-                                  word.as_ptr(),
-                                  word.to_bytes().len() as i32);
-        let bytes:&[u8] = CStr::from_ptr(res).to_bytes();
-        let s:&str = str::from_utf8_unchecked(bytes);
-        return s;
+    ///
+    /// (Note that this method is actually safe to call, but derefencing the pointer it
+    /// returns is unsafe)
+    pub fn stem_unsafe (&self, word: &str) -> *const str {
+        unsafe {
+            let word = CString::new(word).unwrap();
+            let res = sb_stemmer_stem(self.stemmer,
+                                      word.as_ptr(),
+                                      word.to_bytes().len() as i32);
+            let bytes:&[u8] = CStr::from_ptr(res).to_bytes();
+            let s:&str = str::from_utf8_unchecked(bytes);
+            s
+        }
     }
 }
