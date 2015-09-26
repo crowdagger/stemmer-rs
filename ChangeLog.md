@@ -1,6 +1,14 @@
 ChangeLog
 =========
 
+0.3.0 (???)
+-----------
+* `stem` now takes `&mut self` instead of `&self`
+* `stem_unsafe` renamed to `stem_str` since it is no more unsafe:
+  borrowchecker can verify that `stem` is not run again while there is
+  a reference to the returned `&str`
+* added more tests
+
 0.2.0 (2015-08-09)
 ------------------
 * Completed the documentation
