@@ -4,21 +4,15 @@ use std::ffi::CStr;
 use std::ffi::CString;
 use std::str;
 
-#[repr(C)]
-struct SbStemmer;
-type SbSymbol = u8;
-
 pub struct Stemmer {
-    stemmer: *mut SbStemmer
+    stemmer: *mut c_void
 }
-    
-
 
 extern {
-    fn sb_stemmer_list () -> *const *const c_char;
-    fn sb_stemmer_new(algorithm:*const c_char, charenc: *const c_char) -> *mut SbStemmer;
-    fn sb_stemmer_delete(stemmer:*mut SbStemmer);
-    fn sb_stemmer_stem(stemmer:*mut SbStemmer,
+    fn sb_stemmer_list() -> *const *const c_char;
+    fn sb_stemmer_new(algorithm: *const c_char, charenc: *const c_char) -> *mut c_void;
+    fn sb_stemmer_delete(stemmer: *mut c_void);
+    fn sb_stemmer_stem(stemmer: *mut c_void,
                        word: *const c_char,
                        size:c_int) -> *const c_char;
 }
