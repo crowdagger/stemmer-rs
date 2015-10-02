@@ -8,7 +8,8 @@ Stemming library for Rust, using bindings to Snowball C implementation (see http
 can be used.
 * `Stemmer::new(algorithm)` creates a new Stemmer. Note that it
 returns an option, as it can fail if `algorithm` is not a valid one.
-* Once you have a `stemmer`, `stemmer.stem(word)` stems a word.
+* Once you have a (mutable) `Stemmer`, `stemmer.stem(word)` stems a
+  word. 
 
 Note that the C Stemming library (or at least the part that is used by
 the Rust bindings) is included and statically linked by the Rust

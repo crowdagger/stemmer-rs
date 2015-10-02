@@ -8,17 +8,6 @@ use std::str;
 struct SbStemmer;
 type SbSymbol = u8;
 
-/// Stemmer
-///
-/// Wraps Snowball's C stemming library so it can be used safely in Rust.
-///
-/// # Examples
-///
-/// ```
-/// use stemmer::Stemmer;
-/// let mut stemmer = Stemmer::new("french").unwrap();
-/// assert_eq!("éternu", &stemmer.stem("éternuerai"));
-/// ```
 pub struct Stemmer {
     stemmer: *mut SbStemmer
 }
@@ -107,7 +96,15 @@ impl Stemmer {
 
     /// Stems the `word`.
     ///
-    /// Returns an owned string.
+    /// Returns an owned string containing the stemmed version of the word.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use stemmer::Stemmer;
+    /// let mut stemmer = Stemmer::new("french").unwrap();
+    /// assert_eq!("éternu", &stemmer.stem("éternuerai"));
+    /// ```
     pub fn stem(&mut self, word: &str) -> String {
         String::from(self.stem_str(word))
     }
@@ -115,9 +112,20 @@ impl Stemmer {
     /// Stems the word and returns a str
     ///
     /// The `str` reference it returns is only valid as long as you don't
-    /// call `stem` or stem_unsafe` again.
+    /// call `stem` or stem_str` again; thus, Rust's borrowchecker won't let
+    /// call one of them function if you have such a reference in scope.
     ///
-    /// You should use the `stem` method instead.
+    /// # Example
+    ///
+    /// ```
+    /// use stemmer::Stemmer;
+    /// let mut stemmer = Stemmer::new("english").unwrap();
+    /// println!("{}", stemmer.stem_str("foo"));
+    /// println!("{}", stemmer.stem_str("bar")); // ok
+    /// println!("{}", stemmer.stem("baz")); // ok too
+    /// let foo: &str = stemmer.stem_str("foo");
+    /// // stemmer.stem("bar"); -> Compiler error because `stemmer` is already borrowed by `foo`
+    /// ```
     pub fn stem_str (&mut self, word: &str) -> &str {
         unsafe {
             let word = CString::new(word).unwrap();
