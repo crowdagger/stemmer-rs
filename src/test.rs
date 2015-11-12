@@ -40,7 +40,7 @@ fn stem_str_french() {
 #[test]
 fn stem_str_multiple() {
     let mut stemmer = Stemmer::new("french").unwrap();
-    let strings = vec!("foo", "bar", "baz");
+    let strings = vec!["foo", "bar", "baz"];
     for s in strings {
         stemmer.stem_str(s); //no assert, we just check that it compiles
     }

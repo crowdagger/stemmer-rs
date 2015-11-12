@@ -5,16 +5,14 @@ use std::ffi::CString;
 use std::str;
 
 pub struct Stemmer {
-    stemmer: *mut c_void
+    stemmer: *mut c_void,
 }
 
 extern {
     fn sb_stemmer_list() -> *const *const c_char;
     fn sb_stemmer_new(algorithm: *const c_char, charenc: *const c_char) -> *mut c_void;
     fn sb_stemmer_delete(stemmer: *mut c_void);
-    fn sb_stemmer_stem(stemmer: *mut c_void,
-                       word: *const c_char,
-                       size:c_int) -> *const c_char;
+    fn sb_stemmer_stem(stemmer: *mut c_void, word: *const c_char, size: c_int) -> *const c_char;
 }
 
 impl Drop for Stemmer {
@@ -30,19 +28,18 @@ impl Drop for Stemmer {
 impl Stemmer {
     /// Lists all existing algorithms, returning a vector of valid algorithms
     /// that can be used as argument for `Stemmer::new`
-    pub fn list() -> Vec<&'static str>
-    {
+    pub fn list() -> Vec<&'static str> {
         let mut i = 0;
         unsafe {
-            let list:*const *const c_char = sb_stemmer_list();
-            let mut res = vec!();
+            let list: *const *const c_char = sb_stemmer_list();
+            let mut res = vec![];
             loop {
-                let string_ptr:*const c_char = *list.offset(i);
+                let string_ptr: *const c_char = *list.offset(i);
                 if string_ptr.is_null() {
                     return res;
                 } else {
-                    let bytes:&[u8] = CStr::from_ptr(string_ptr).to_bytes();
-                    let s:&str = str::from_utf8_unchecked(bytes);
+                    let bytes: &[u8] = CStr::from_ptr(string_ptr).to_bytes();
+                    let s: &str = str::from_utf8_unchecked(bytes);
                     res.push(s);
                     i += 1;
                 }
@@ -79,11 +76,11 @@ impl Stemmer {
         let algo = CString::new(algorithm).unwrap();
         let enc = CString::new("UTF_8").unwrap();
         unsafe {
-            let stemmer = sb_stemmer_new(algo.as_ptr(),enc.as_ptr());
+            let stemmer = sb_stemmer_new(algo.as_ptr(), enc.as_ptr());
             if stemmer.is_null() {
                 return None;
-            } else {            
-                return Some(Stemmer{stemmer:stemmer});
+            } else {
+                return Some(Stemmer { stemmer: stemmer });
             }
         }
     }
@@ -120,13 +117,11 @@ impl Stemmer {
     /// let foo: &str = stemmer.stem_str("foo");
     /// // stemmer.stem("bar"); -> Compiler error because `stemmer` is already borrowed by `foo`
     /// ```
-    pub fn stem_str (&mut self, word: &str) -> &str {
+    pub fn stem_str(&mut self, word: &str) -> &str {
         unsafe {
             let word = CString::new(word).unwrap();
-            let res = sb_stemmer_stem(self.stemmer,
-                                      word.as_ptr(),
-                                      word.to_bytes().len() as i32);
-            let bytes:&[u8] = CStr::from_ptr(res).to_bytes();
+            let res = sb_stemmer_stem(self.stemmer, word.as_ptr(), word.to_bytes().len() as i32);
+            let bytes: &[u8] = CStr::from_ptr(res).to_bytes();
             str::from_utf8_unchecked(bytes)
         }
     }
