@@ -1,8 +1,13 @@
 ChangeLog
 =========
 
-0.3.0 (???)
------------
+0.3.1 (2015-11-12)
+------------------
+* updated `libc` dependency to 0.2
+* fixed `Cargo.toml` dependencies version (removed bad "*"!) 
+
+0.3.0 (2015-10-02)
+------------------
 * `stem` now takes `&mut self` instead of `&self`
 * `stem_unsafe` renamed to `stem_str` since it is no more unsafe:
   borrowchecker can verify that `stem` is not run again while there is
