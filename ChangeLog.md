@@ -1,6 +1,10 @@
 ChangeLog
 =========
 
+0.3.2 (2015-12-10)
+------------------
+* `Cargo.toml`: fixed documentation and homepage links
+
 0.3.1 (2015-11-12)
 ------------------
 * updated `libc` dependency to 0.2
