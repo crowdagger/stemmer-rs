@@ -1,6 +1,10 @@
 ChangeLog
 =========
 
+0.3.3 (unreleased)
+------------------
+* `Cargo.toml`: fixed repository link
+
 0.3.2 (2015-12-10)
 ------------------
 * `Cargo.toml`: fixed documentation and homepage links
