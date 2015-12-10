@@ -16,6 +16,12 @@ the Rust bindings) is included and statically linked by the Rust
 bindings, so you don't have any other libraries to install when you
 use this Rust library.
 
+## Documentation
+
+See the
+[documentation](http://lise-henry.github.io/rust/stemmer/index.html)
+for this library.
+
 ## Credits
 
 These are just Rust bindings for the Snowball C stemming library,
