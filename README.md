@@ -2,6 +2,8 @@
 
 Stemming library for Rust, using bindings to Snowball C implementation (see http://snowball.tartarus.org/)
 
+[![Build Status](https://travis-ci.org/lise-henry/stemmer-rs.svg?branch=master)](https://travis-ci.org/lise-henry/stemmer-rs)
+
 ## Usage
 
 * `Stemmer::list()` returns a vector with all possible algorithms that
