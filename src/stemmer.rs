@@ -78,9 +78,9 @@ impl Stemmer {
         unsafe {
             let stemmer = sb_stemmer_new(algo.as_ptr(), enc.as_ptr());
             if stemmer.is_null() {
-                return None;
+                None
             } else {
-                return Some(Stemmer { stemmer: stemmer });
+                Some(Stemmer { stemmer: stemmer })
             }
         }
     }
